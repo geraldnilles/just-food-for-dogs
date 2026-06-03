@@ -43,7 +43,7 @@ Open `index.html` in any modern browser — no build step, no server, no depende
 
 For convenience, it's also hosted via GitHub Pages at:
 
-**[geraldnilles.github.io/just-food-for-dogs](https://nilles.github.io/just-food-for-dogs)**
+**[geraldnilles.github.io/just-food-for-dogs](https://geraldnilles.github.io/just-food-for-dogs)**
 
 ## Source Data
 
