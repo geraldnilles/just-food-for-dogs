@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JustFoodForDogs Meal Calculator</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        body {
+            background-color: #f3f4f6;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+        .brand-bg {
+            background-color: #004d40; /* JustFoodForDogs signature deep green tone */
+        }
+        .brand-text {
+            color: #004d40;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4 sm:p-6">
+
+    <div class="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+        <div class="brand-bg p-6 text-white text-center">
+            <h1 class="text-2xl font-bold tracking-tight">Dog Feeding Calculator</h1>
+            <p class="text-emerald-100 text-sm mt-1 font-medium">Fresh Frozen Daily Diets (Page 1 Guide)</p>
+        </div>
+
+        <div class="p-6 space-y-6">
+            
+            <div>
+                <label for="recipe" class="block text-sm font-semibold text-gray-700 mb-2">Recipe</label>
+                <select id="recipe" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-emerald-600 focus:border-emerald-600 block p-3 transition shadow-sm">
+                    <option value="beef" selected>Beef & Russet Potato</option>
+                    <option value="chicken">Chicken & Rice</option>
+                    <option value="fish">Fish & Sweet Potato</option>
+                    <option value="lamb">Lamb & Brown Rice</option>
+                    <option value="tofu">Tofu & Quinoa</option>
+                    <option value="turkey">Turkey & Whole Wheat Macaroni</option>
+                    <option value="venison">Venison & Squash</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="activity" class="block text-sm font-semibold text-gray-700 mb-2">Activity Level</label>
+                <select id="activity" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-emerald-600 focus:border-emerald-600 block p-3 transition shadow-sm">
+                    <option value="low" selected>Low Activity</option>
+                    <option value="moderate">Moderate Activity</option>
+                    <option value="high">High Activity</option>
+                </select>
+            </div>
+
+            <div>
+                <div class="flex justify-between items-center mb-2">
+                    <label for="weightSlider" class="text-sm font-semibold text-gray-700">Dog's Weight</label>
+                    <div class="flex items-center space-x-1">
+                        <input type="number" id="weightInput" min="5" max="80" step="0.1" value="12" class="w-16 text-center bg-gray-50 border border-gray-300 text-sm font-bold rounded-lg p-1 text-gray-900 focus:ring-emerald-600 focus:border-emerald-600">
+                        <span class="text-sm text-gray-500 font-medium">lbs</span>
+                    </div>
+                </div>
+                <input id="weightSlider" type="range" min="5" max="80" step="0.5" value="12" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-emerald-700">
+                <div class="flex justify-between text-xs text-gray-400 mt-1">
+                    <span>5 lbs</span>
+                    <span>40 lbs</span>
+                    <span>80 lbs</span>
+                </div>
+            </div>
+
+            <hr class="border-gray-100 my-4" />
+
+            <div class="bg-emerald-50 rounded-2xl p-5 border border-emerald-100 text-center space-y-4">
+                <div>
+                    <span class="block text-xs uppercase tracking-wider text-emerald-800 font-bold">Target Weight Class</span>
+                    <span id="weightClassDisplay" class="text-sm font-semibold text-emerald-950 mt-0.5 inline-block bg-white px-3 py-0.5 rounded-full shadow-xs">Small (11-20 lbs)</span>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4 pt-2">
+                    <div class="bg-white p-3 rounded-xl shadow-xs border border-emerald-100">
+                        <span class="block text-xs text-gray-500 font-medium mb-1">Per Meal (2x/day)</span>
+                        <span id="gramsPerMeal" class="text-3xl font-extrabold brand-text">--</span>
+                        <span class="text-xs font-bold text-gray-400 block mt-0.5">grams</span>
+                    </div>
+                    <div class="bg-white p-3 rounded-xl shadow-xs border border-emerald-100">
+                        <span class="block text-xs text-gray-500 font-medium mb-1">Total Daily Intake</span>
+                        <span id="gramsPerDay" class="text-xl font-bold text-gray-800">--</span>
+                        <span class="text-xs text-gray-400 font-semibold block">grams (<span id="ozPerDay">--</span> oz)</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Data Anchors mapped linearly from 5 lbs to 80 lbs boundaries from Page 1: [5, 10, 20, 40, 60, 80]
+        const weightAnchors = [5, 10, 20, 40, 60, 80];
+        
+        const feedingData = {
+            beef: {
+                low: [3.5, 5.5, 9.5, 15.5, 21.0, 26.0],
+                moderate: [4.0, 6.5, 11.0, 18.5, 24.5, 30.5],
+                high: [5.5, 8.5, 14.5, 24.0, 32.5, 40.0]
+            },
+            chicken: {
+                low: [3.5, 5.5, 9.5, 16.0, 21.5, 26.5],
+                moderate: [4.0, 6.5, 10.5, 18.5, 25.5, 31.5],
+                high: [5.5, 8.5, 14.5, 24.0, 33.5, 41.0]
+            },
+            fish: {
+                low: [5.5, 9.5, 15.5, 26.5, 35.5, 44.0],
+                moderate: [6.5, 11.0, 18.5, 31.0, 42.0, 52.0],
+                high: [8.5, 14.5, 24.0, 40.5, 54.5, 68.0]
+            },
+            lamb: {
+                low: [3.5, 5.5, 9.5, 16.5, 22.0, 27.5],
+                moderate: [4.5, 6.5, 11.5, 19.5, 26.0, 32.5],
+                high: [5.0, 9.0, 15.0, 25.0, 34.0, 42.0]
+            },
+            tofu: {
+                low: [5.0, 8.0, 13.5, 22.5, 30.0, 38.5],
+                moderate: [5.5, 9.5, 16.0, 26.0, 36.0, 45.0],
+                high: [7.5, 12.5, 21.0, 35.0, 47.5, 58.0]
+            },
+            turkey: {
+                low: [3.0, 5.0, 8.5, 14.0, 19.0, 23.5],
+                moderate: [3.5, 6.0, 9.5, 16.5, 22.5, 27.5],
+                high: [4.5, 7.5, 12.5, 21.5, 29.0, 36.0]
+            },
+            venison: {
+                low: [5.5, 9.5, 16.5, 27.5, 37.0, 45.5],
+                moderate: [6.5, 11.5, 19.5, 32.5, 43.5, 54.0],
+                high: [9.0, 15.0, 25.0, 42.0, 57.0, 70.5]
+            }
+        };
+
+        const OZ_TO_GRAMS = 28.34952;
+
+        // DOM Elements
+        const recipeSelect = document.getElementById('recipe');
+        const activitySelect = document.getElementById('activity');
+        const weightSlider = document.getElementById('weightSlider');
+        const weightInput = document.getElementById('weightInput');
+        
+        const weightClassDisplay = document.getElementById('weightClassDisplay');
+        const gramsPerMeal = document.getElementById('gramsPerMeal');
+        const gramsPerDay = document.getElementById('gramsPerDay');
+        const ozPerDay = document.getElementById('ozPerDay');
+
+        // Determine current size category label text
+        function getWeightClassLabel(w) {
+            if (w >= 5 && w <= 10) return "Extra Small (5-10 lbs)";
+            if (w > 10 && w <= 20) return "Small (11-20 lbs)";
+            if (w > 20 && w <= 40) return "Medium (21-40 lbs)";
+            if (w > 40 && w <= 60) return "Large (41-60 lbs)";
+            if (w > 60) return "X Large (61-80 lbs)";
+            return "Unknown Size";
+        }
+
+        // Linear interpolation logic
+        function interpolateFeeding(weight, anchors, values) {
+            if (weight <= anchors[0]) return values[0];
+            if (weight >= anchors[anchors.length - 1]) return values[values.length - 1];
+            
+            for (let i = 0; i < anchors.length - 1; i++) {
+                if (weight >= anchors[i] && weight <= anchors[i + 1]) {
+                    const weightDiff = anchors[i + 1] - anchors[i];
+                    const fraction = (weight - anchors[i]) / weightDiff;
+                    return values[i] + fraction * (values[i + 1] - values[i]);
+                }
+            }
+            return values[0];
+        }
+
+        function calculateFeeding() {
+            const recipe = recipeSelect.value;
+            const activity = activitySelect.value;
+            const weight = parseFloat(weightInput.value) || 5;
+
+            // Update Label Category
+            weightClassDisplay.textContent = getWeightClassLabel(weight);
+
+            // Fetch structural profile data array
+            const targetDataset = feedingData[recipe][activity];
+
+            // Perform calculation in Ounces
+            const dailyOunces = interpolateFeeding(weight, weightAnchors, targetDataset);
+            
+            // Gram conversion
+            const dailyGrams = dailyOunces * OZ_TO_GRAMS;
+            const mealGrams = dailyGrams / 2;
+
+            // Output formatting (rounded to nearest integer for scale accuracy)
+            gramsPerMeal.textContent = Math.round(mealGrams);
+            gramsPerDay.textContent = Math.round(dailyGrams);
+            ozPerDay.textContent = dailyOunces.toFixed(1);
+        }
+
+        // Sync inputs: Slider moves -> Input box updates
+        weightSlider.addEventListener('input', (e) => {
+            weightInput.value = e.target.value;
+            calculateFeeding();
+        });
+
+        // Sync inputs: Input box typed -> Slider updates
+        weightInput.addEventListener('input', (e) => {
+            let val = parseFloat(e.target.value);
+            if (val < 5) val = 5;
+            if (val > 80) val = 80;
+            weightSlider.value = val;
+            calculateFeeding();
+        });
+
+        // Add regular event updates to dropdown selections
+        recipeSelect.addEventListener('change', calculateFeeding);
+        activitySelect.addEventListener('change', calculateFeeding);
+
+        // Run setup calculations instantly on load
+        calculateFeeding();
+    </script>
+</body>
+</html>
