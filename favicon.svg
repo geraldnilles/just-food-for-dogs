@@ -1,52 +1,28 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
-  <defs>
-    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#1E293B" />
-      <stop offset="100%" stop-color="#0F172A" />
-    </linearGradient>
+    <circle cx="256" cy="256" r="256" fill="#0F172A"/>
     
-    <linearGradient id="pawGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#FF6B6B" />
-      <stop offset="100%" stop-color="#FF4757" />
-    </linearGradient>
-
-    <linearGradient id="bowlGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#FFFFFF" />
-      <stop offset="100%" stop-color="#E2E8F0" />
-    </linearGradient>
-  </defs>
-
-  <rect width="512" height="512" rx="128" fill="url(#bgGrad)" />
-
-  <g fill="url(#pawGrad)">
-    <circle cx="175" cy="165" r="24" />
-    <circle cx="222" cy="125" r="27" />
-    <circle cx="290" cy="125" r="27" />
-    <circle cx="337" cy="165" r="24" />
+    <rect x="112" y="112" width="288" height="288" rx="64" fill="#FFFFFF"/>
     
-    <path d="M 256,195 
-             C 240,180 210,180 200,205 
-             C 190,230 215,260 256,260 
-             C 297,260 322,230 312,205 
-             C 302,180 272,180 256,195 Z" />
-  </g>
-
-  <path d="M 180,280 
-           L 332,280 
-           C 342,280 350,286 353,296 
-           L 390,394 
-           C 394,404 386,414 375,414 
-           L 137,414 
-           C 126,414 118,404 122,394 
-           L 159,296 
-           C 162,286 170,280 180,280 Z" 
-        fill="url(#bowlGrad)" />
-
-  <g>
-    <rect x="206" y="335" width="100" height="38" rx="8" fill="#1E293B" />
+    <rect x="152" y="148" width="208" height="56" rx="12" fill="#0F172A"/>
     
-    <rect x="218" y="347" width="52" height="14" rx="3" fill="#06B6D4" opacity="0.9" />
-    <circle cx="284" cy="354" r="4" fill="#06B6D4" opacity="0.9" />
-  </g>
+    <rect x="172" y="166" width="112" height="20" rx="5" fill="#34D399"/>
+    <rect x="304" y="166" width="20" height="20" rx="5" fill="#34D399"/>
+    
+    <ellipse cx="182" cy="270" rx="14" ry="21" fill="#0F172A" transform="rotate(-18 182 270)"/>
+    
+    <ellipse cx="225" cy="238" rx="16" ry="25" fill="#0F172A" transform="rotate(-6 225 238)"/>
+    
+    <ellipse cx="287" cy="238" rx="16" ry="25" fill="#0F172A" transform="rotate(6 287 238)"/>
+    
+    <ellipse cx="330" cy="270" rx="14" ry="21" fill="#0F172A" transform="rotate(18 330 270)"/>
+    
+    <path d="M 256,285 
+             C 220,285 200,305 200,330 
+             C 200,352 216,365 238,365 
+             C 247,365 252,359 256,359 
+             C 260,359 265,365 274,365 
+             C 296,365 312,352 312,330 
+             C 312,305 292,285 256,285 Z" 
+          fill="#0F172A"/>
 </svg>
 
