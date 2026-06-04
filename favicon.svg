@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1E293B" />
+      <stop offset="100%" stop-color="#0F172A" />
+    </linearGradient>
+    
+    <linearGradient id="pawGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FF6B6B" />
+      <stop offset="100%" stop-color="#FF4757" />
+    </linearGradient>
+
+    <linearGradient id="bowlGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="100%" stop-color="#E2E8F0" />
+    </linearGradient>
+  </defs>
+
+  <rect width="512" height="512" rx="128" fill="url(#bgGrad)" />
+
+  <g fill="url(#pawGrad)">
+    <circle cx="175" cy="165" r="24" />
+    <circle cx="222" cy="125" r="27" />
+    <circle cx="290" cy="125" r="27" />
+    <circle cx="337" cy="165" r="24" />
+    
+    <path d="M 256,195 
+             C 240,180 210,180 200,205 
+             C 190,230 215,260 256,260 
+             C 297,260 322,230 312,205 
+             C 302,180 272,180 256,195 Z" />
+  </g>
+
+  <path d="M 180,280 
+           L 332,280 
+           C 342,280 350,286 353,296 
+           L 390,394 
+           C 394,404 386,414 375,414 
+           L 137,414 
+           C 126,414 118,404 122,394 
+           L 159,296 
+           C 162,286 170,280 180,280 Z" 
+        fill="url(#bowlGrad)" />
+
+  <g>
+    <rect x="206" y="335" width="100" height="38" rx="8" fill="#1E293B" />
+    
+    <rect x="218" y="347" width="52" height="14" rx="3" fill="#06B6D4" opacity="0.9" />
+    <circle cx="284" cy="354" r="4" fill="#06B6D4" opacity="0.9" />
+  </g>
+</svg>
+
