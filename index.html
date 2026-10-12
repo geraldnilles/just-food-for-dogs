@@ -24,10 +24,11 @@
     <div class="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
         <div class="brand-bg p-6 text-white text-center">
             <h1 class="text-2xl font-bold tracking-tight">Just Food For Dogs</h1>
-            <p class="text-emerald-100 text-sm mt-1 font-medium">JustFoodForDogs &amp; A Pup Above Fresh Diets</p>
+            <p class="text-emerald-100 text-sm mt-1 font-medium">JustFoodForDogs, A Pup Above &amp; Open Farm Fresh Diets</p>
             <div class="mt-2 flex flex-wrap justify-center gap-x-4 gap-y-1">
                 <a href="./2025-Feeding-Guidelines-Frozen.pdf" target="_blank" class="inline-block text-xs text-emerald-200 hover:text-white underline underline-offset-2 transition">📄 JustFoodForDogs Guidelines (PDF)</a>
                 <a href="https://apupabove.com/blogs/all/how-much-food-should-my-dog-eat" target="_blank" class="inline-block text-xs text-emerald-200 hover:text-white underline underline-offset-2 transition">📄 A Pup Above Guidelines</a>
+                <a href="https://openfarmpet.com/products/chicken-gently-cooked-dog-food" target="_blank" class="inline-block text-xs text-emerald-200 hover:text-white underline underline-offset-2 transition">📄 Open Farm Guidelines</a>
             </div>
         </div>
 
@@ -59,6 +60,11 @@
                         <option value="apa.turducken">Turducken (Poultry Blend)</option>
                         <option value="apa.fish">Fish Gone Wild (Fish)</option>
                         <option value="apa.puppy">Puppy Recipe</option>
+                    </optgroup>
+                    <optgroup label="── Open Farm (Gently Cooked) ──">
+                        <option value="openfarm.chicken">Harvest Chicken Gently Cooked</option>
+                        <option value="openfarm.beef">Grass-Fed Beef Gently Cooked</option>
+                        <option value="openfarm.turkey">Homestead Turkey Gently Cooked</option>
                     </optgroup>
                 </select>
             </div>
@@ -185,6 +191,21 @@
         const apaAnchors = [5, 10, 15, 20, 30, 40, 50, 60, 70, 80];
         const apaData = [4, 5 + 1/3, 8, 12, 16, 20, 21 + 1/3, 24, 28, 32];
 
+        // ── Open Farm (Gently Cooked) ──
+        // Open Farm sells Gently Cooked in 16 oz pouches. All three adult recipes
+        // (Harvest Chicken, Grass-Fed Beef, Homestead Turkey) share the SAME feeding chart.
+        // The chart has two activity levels: Less Active and More Active.
+        // Anchors: [10, 15, 20, 25, 30, 40, 50, 60, 70, 80] lbs.
+        // Values are 16 oz POUCHES per day from the Open Farm feeding guidelines.
+        const openfarmAnchors = [10, 15, 20, 25, 30, 40, 50, 60, 70, 80];
+        const OPENFARM_OZ_PER_POUCH = 16;
+        const openfarmData = {
+            // Less Active (mapped to the app's Low Activity)
+            low: [1/2, 3/5, 3/4, 7/8, 1, 1 + 1/4, 1 + 1/2, 1 + 2/3, 1 + 7/8, 2],
+            // More Active (mapped to the app's High Activity)
+            high: [3/5, 3/4, 1, 1 + 1/4, 1 + 1/3, 1 + 2/3, 2, 2 + 1/4, 2 + 1/2, 2 + 3/4]
+        };
+
         const OZ_TO_GRAMS = 28.34952;
 
         // DOM Elements
@@ -194,6 +215,7 @@
         const weightInput = document.getElementById('weightInput');
         
         const activityNote = document.getElementById('activityNote');
+        const moderateOption = activitySelect.querySelector('option[value="moderate"]');
 
         const weightClassDisplay = document.getElementById('weightClassDisplay');
         const gramsPerMeal = document.getElementById('gramsPerMeal');
@@ -227,23 +249,49 @@
 
         function calculateFeeding() {
             const recipe = recipeSelect.value;
-            const activity = activitySelect.value;
             const weight = parseFloat(weightInput.value) || 5;
 
             // Update Label Category
             weightClassDisplay.textContent = getWeightClassLabel(weight);
 
-            // A Pup Above uses a single chart for every recipe and every activity level.
+            // Brand-specific handling.
+            // A Pup Above publishes a single chart for every recipe and every activity level.
+            // Open Farm publishes one adult chart shared by all three Gently Cooked recipes,
+            // with only two activity levels (Less Active / More Active).
             const isAPA = recipe.startsWith('apa.');
+            const isOpenFarm = recipe.startsWith('openfarm.');
+
             activitySelect.disabled = isAPA;
-            activityNote.classList.toggle('hidden', !isAPA);
+            moderateOption.disabled = isOpenFarm;
 
-            // Fetch structural profile data array and the matching weight anchors
-            const anchors = isAPA ? apaAnchors : weightAnchors;
-            const targetDataset = isAPA ? apaData : feedingData[recipe][activity];
+            // Open Farm's "Less Active" maps to Low and "More Active" maps to High.
+            if (isOpenFarm && activitySelect.value === 'moderate') {
+                activitySelect.value = 'low';
+            }
 
-            // Perform calculation in Ounces
-            const dailyOunces = interpolateFeeding(weight, anchors, targetDataset);
+            if (isAPA) {
+                activityNote.textContent = "A Pup Above publishes one chart for all recipes, and it does not vary by activity level.";
+            } else if (isOpenFarm) {
+                activityNote.textContent = "Open Farm publishes two activity levels: Less Active (shown as Low) and More Active (shown as High).";
+            }
+            activityNote.classList.toggle('hidden', !(isAPA || isOpenFarm));
+
+            // Fetch the matching weight anchors and data array for the chosen brand.
+            let anchors = weightAnchors;
+            let targetDataset;
+            if (isAPA) {
+                anchors = apaAnchors;
+                targetDataset = apaData;
+            } else if (isOpenFarm) {
+                anchors = openfarmAnchors;
+                targetDataset = openfarmData[activitySelect.value];
+            } else {
+                targetDataset = feedingData[recipe][activitySelect.value];
+            }
+
+            // Perform calculation in Ounces (Open Farm values are pouches, so convert).
+            let dailyOunces = interpolateFeeding(weight, anchors, targetDataset);
+            if (isOpenFarm) dailyOunces *= OPENFARM_OZ_PER_POUCH;
             
             // Gram conversion
             const dailyGrams = dailyOunces * OZ_TO_GRAMS;

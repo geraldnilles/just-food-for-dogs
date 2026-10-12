@@ -1,6 +1,6 @@
 # JustFoodForDogs Meal Calculator
 
-A simple, single-page web app that makes it easy to calculate per-meal portions (in grams) for JustFoodForDogs Fresh Frozen daily diets **and A Pup Above Fresh, Gently Cooked recipes** — perfect for use with a digital food scale.
+A simple, single-page web app that makes it easy to calculate per-meal portions (in grams) for JustFoodForDogs Fresh Frozen daily diets, **A Pup Above Fresh, Gently Cooked recipes, and Open Farm Gently Cooked recipes** — perfect for use with a digital food scale.
 
 ## What It Does
 
@@ -8,7 +8,7 @@ The [official JustFoodForDogs feeding guide](https://www.justfoodfordogs.com/on/
 
 This calculator does the math for you:
 
-- **Pick your recipe** — seven JustFoodForDogs daily diets, four JustFoodForDogs Targeted Nutrition diets, or seven A Pup Above recipes
+- **Pick your recipe** — seven JustFoodForDogs daily diets, four JustFoodForDogs Targeted Nutrition diets, seven A Pup Above recipes, or three Open Farm Gently Cooked recipes
 - **Set the activity level** (Low, Moderate, or High)
 - **Dial in your dog's weight** via slider or text input
 - **Get precise per-meal and daily amounts** in grams and ounces
@@ -21,6 +21,7 @@ Each source guide defines anchor points at specific weight boundaries. The calcu
 
 - **JustFoodForDogs** anchors at **5, 10, 20, 40, 60, and 80 lbs**, with separate values per recipe and activity level (Low / Moderate / High).
 - **A Pup Above** anchors at **5, 10, 15, 20, 30, 40, 50, 60, 70, and 80 lbs**. A Pup Above publishes a single chart that applies to all seven recipes (a patty is standardized at 1 lb), and it is **not** broken out by activity level — so the same amount applies at every activity level.
+- **Open Farm** anchors at **10, 15, 20, 25, 30, 40, 50, 60, 70, and 80 lbs**. Open Farm publishes a single adult chart shared by all three Gently Cooked recipes, sold in **16 oz pouches**, with two activity levels (Less Active / More Active). The calculator maps Less Active to Low and More Active to High, and disables the Moderate option while an Open Farm recipe is selected.
 
 ### Supported Recipes
 
@@ -57,13 +58,21 @@ Each source guide defines anchor points at specific weight boundaries. The calcu
 | Fish Gone Wild (Fish)           |
 | Puppy Recipe                    |
 
+**Open Farm — Gently Cooked**
+
+| Recipe                     |
+|----------------------------|
+| Harvest Chicken            |
+| Grass-Fed Beef             |
+| Homestead Turkey           |
+
 ### Activity Levels
 
 - Low
 - Moderate
 - High
 
-Activity levels apply to the JustFoodForDogs charts. A Pup Above publishes a single chart for all recipes that does not vary by activity level, so the activity selector is disabled while an A Pup Above recipe is selected.
+Activity levels apply to the JustFoodForDogs charts. A Pup Above publishes a single chart for all recipes that does not vary by activity level, so the activity selector is disabled while an A Pup Above recipe is selected. Open Farm publishes only two activity levels (Less Active / More Active), so while an Open Farm recipe is selected the Moderate option is disabled and the remaining options map to Less Active (Low) and More Active (High).
 
 ## Usage
 
@@ -79,8 +88,9 @@ The feeding values are derived from two sources:
 
 - **2025 JustFoodForDogs Feeding Guidelines for Fresh Frozen Daily Diets** (Revision 25.4.1). A copy of the source PDF is included in this repository: [`2025-Feeding-Guidelines-Frozen.pdf`](./2025-Feeding-Guidelines-Frozen.pdf)
 - **A Pup Above feeding guidelines** — "How Much Should My Dog Eat? Feeding Charts by Weight": <https://apupabove.com/blogs/all/how-much-food-should-my-dog-eat>
+- **Open Farm Gently Cooked feeding guidelines** — e.g. Harvest Chicken Gently Cooked: <https://openfarmpet.com/products/chicken-gently-cooked-dog-food>. A saved copy of the source page is included in this repository: [`OpenFarm.html`](./OpenFarm.html)
 
-> **Disclaimer:** The charts are only a guide. Always adjust feeding recommendations based on careful monitoring of your dog's weight. This calculator is not affiliated with or endorsed by JustFoodForDogs or A Pup Above.
+> **Disclaimer:** The charts are only a guide. Always adjust feeding recommendations based on careful monitoring of your dog's weight. This calculator is not affiliated with or endorsed by JustFoodForDogs, A Pup Above, or Open Farm.
 
 ## License
 
